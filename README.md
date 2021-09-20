@@ -1,6 +1,7 @@
 # URL
 Extract "HTTP/S URLS from FILE.
-Can be modified and redistributed. Without anyone's permission.
+
+Can be modified and distributed. Without anyone's permission.
 
 # COMPILE
 gcc main.c
