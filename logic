@@ -1,0 +1,219 @@
+// Aurthor : : Unusual Boyee
+// Date    : : 2021/08/17
+// Concept : : Url extraction from file.
+// Main    : : voperatingsystem@gmail.com
+// Country : : Nepal
+/* This file is consider as second file.
+ * It does all the process to give first position and last position of url.
+ * Also there is third file as pattern which also gives last position of url. */
+
+#include "variable"
+#include "pattern"
+#include "complete"
+
+int ASA();
+
+/*
+int first_position;
+int final_http_position;
+int size;
+char *main_file_buffer;
+*/
+
+/* Function from main call this function after argument query function. */
+void ESE(){
+	int confirm_https,confirm_http,confirm_https_3x,confirm_https_and;
+	first_position=0;
+
+/* This process takes the http://,https://,https\x32,https&#x3a pattern matching for first position. */
+	for(int i=0;i<size;i++){
+		if(main_file_buffer[i]==104){
+			first_position=0;
+			final_http_position=0;
+			confirm_https=0;
+			confirm_http=0;
+			confirm_https_3x=0;
+			confirm_https_and=0;
+
+/* All the below process in for loops are quite similar here is some described processess.
+ * For loop repeats upto number, the array of different http/s matching have different number.
+ * It then checks file buffer and array position to be matched.
+ * If checking array doesn't increases the confirmation counts it will reset the i'th position and breaks the running loop.
+ * Else checking array increases and give the required confirmation, again it will reset the i'th position and sets first position for url.
+ * Reseting 'i' is important to keep checking other pattern below. After reseting 'i' it will be in the position where it was before the second for loop.
+ * 'i' is considered as first loop where 'j' is considered second loop. */
+			for(int j=0;j<8;j++){
+				if(main_file_buffer[i]==https[j]){
+					confirm_https+=1;
+					i++;
+				}else { i=i-confirm_https;break;}
+				if(confirm_https==8){ 
+					i=i-confirm_https;
+					first_position=i;
+				}
+			}
+			for(int j=0;j<7;j++){
+				if(main_file_buffer[i]==http[j]){
+					confirm_http+=1;
+					i++;
+				}else{ i=i-confirm_http; break;}
+				if(confirm_http==7){
+				       	i=i-confirm_http;
+					first_position=i;
+				}
+			}
+			for(int j=0;j<9;j++){
+				if(main_file_buffer[i]==https_3x[j]){
+					confirm_https_3x+=1;
+					i++;
+				}else{ i=i-confirm_https_3x; break;}
+				if(confirm_https_3x==9){
+					i=i-confirm_https_3x;
+					first_position=i;
+				}
+			}
+			for(int j=0;j<10;j++){
+				if(main_file_buffer[i]==https_and[j]){
+					confirm_https_and+=1;
+					i++;
+				}else { i=i-confirm_https_and;break;}
+				if(confirm_https_and==10){
+
+					i=i-confirm_https_and;	
+					first_position=i;
+				}
+			}
+
+/* After getting first position from above loops.
+ * Checks for all confirmation and process according to the confrimed counts. */
+			if(confirm_https==8 || confirm_http==7) {
+
+/* ASA function is below in this same file. */
+				ASA();
+
+/* All the 'check_pattern' begining function are in pattern header file. */
+				check_pattern();
+			}
+			if(confirm_https_3x==9){
+				check_pattern_3x();
+			}
+			if(confirm_https_and==10){
+				check_pattern_and();
+			}
+			if(first_position > 0 && final_http_position>0) url_chain();
+		}	
+	}
+}
+
+int ampersand,question_mark,double_quote,single_quote,open_bracket,close_bracket,comma,f_slash,s_space;
+
+/* This function does checking only if the http:// or https:// are been confirmed. */
+int ASA(){
+	ampersand=0,question_mark=0,double_quote=0,single_quote=0,open_bracket=0,close_bracket=0,comma=0,f_slash=0,s_space=0;
+
+/* All the below for loops are quite similar.
+ * Checks for the different character, as in file different character are set for different ending points.
+ * Sets the numeric value according to the name of ending point. */
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==38){
+			ampersand=i;	
+			break;
+		}else ampersand=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==34){
+			double_quote=i;
+			break;
+		}else double_quote=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==63){
+			question_mark=i;
+			break;
+		}else question_mark=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==39){
+			single_quote=i;
+			break;
+		}else single_quote=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==41){
+			close_bracket=i;
+			break;
+		}else close_bracket=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==40){
+			open_bracket=i;
+			break;
+		}else open_bracket=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==44){
+			comma=i;
+			break;
+		}else comma=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==92){
+			f_slash=i;
+			break;
+		}else f_slash=0;
+	}
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==32){
+			s_space=i;
+			break;
+		}else s_space=0;
+	}
+
+/* The below process is to finalize which of the above ending points are closer from the first position. */
+	//printf("%d %d %d %d %d %d %d %d %d\n-\n",s_space,f_slash,ampersand,double_quote,question_mark,single_quote,close_bracket,open_bracket,comma);	
+	if(ampersand==0) ampersand=size;
+        if(double_quote==0) double_quote=size;
+        if(single_quote==0) single_quote=size;
+        if(open_bracket==0) open_bracket=size;
+        if(close_bracket==0) close_bracket=size;
+        if(question_mark==0) question_mark=size;
+        if(comma==0) comma=size;
+        if(f_slash==0) f_slash=size;
+        if(s_space==0) s_space=size;
+        if(ampersand < s_space && ampersand < f_slash && ampersand < double_quote && ampersand < question_mark && ampersand < single_quote && ampersand < open_bracket && ampersand < close_bracket && ampersand < comma){
+                final_http_position=ampersand;
+                return ampersand;
+        }
+        if(double_quote < s_space && double_quote < f_slash && double_quote < ampersand && double_quote < question_mark && double_quote < single_quote && double_quote < open_bracket && double_quote < close_bracket && double_quote < comma){
+                final_http_position=double_quote;
+                return double_quote;
+        }
+        if(single_quote < s_space && single_quote < f_slash && single_quote < double_quote && single_quote < question_mark && single_quote < ampersand && single_quote < open_bracket && single_quote < close_bracket && single_quote < comma){
+                final_http_position=single_quote;
+                return single_quote;
+        }
+        if(question_mark < s_space && question_mark < f_slash && question_mark < double_quote && question_mark < ampersand && question_mark < single_quote && question_mark < open_bracket && question_mark < close_bracket && question_mark < comma){
+                final_http_position=question_mark;
+                return question_mark;
+        }
+        if(close_bracket < s_space && close_bracket < f_slash && close_bracket < double_quote && close_bracket < question_mark && close_bracket < single_quote && close_bracket < open_bracket && close_bracket < ampersand && close_bracket < comma){
+                final_http_position=close_bracket;
+                return close_bracket;
+        }
+        if(open_bracket < s_space && open_bracket < f_slash && open_bracket < double_quote && open_bracket < question_mark && open_bracket < single_quote && open_bracket < ampersand && open_bracket < close_bracket && open_bracket < comma){
+                final_http_position=open_bracket;
+                return open_bracket;
+        }
+        if(comma < s_space && comma < f_slash && comma < double_quote && comma < question_mark && comma < single_quote && comma < ampersand && comma < close_bracket && comma < open_bracket){
+                final_http_position=comma;
+                return comma;
+        }
+        if(f_slash < s_space && f_slash < comma && f_slash < double_quote && f_slash < question_mark && f_slash < single_quote && f_slash < ampersand && f_slash < close_bracket && f_slash < open_bracket){
+                final_http_position=f_slash;
+                return f_slash;
+        }
+	if(s_space < f_slash && s_space < comma && s_space < double_quote && s_space < question_mark && s_space < single_quote && s_space < ampersand && s_space < close_bracket && s_space < open_bracket){
+                final_http_position=s_space;
+                return s_space;
+        }
+}

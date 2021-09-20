@@ -1,0 +1,53 @@
+// Aurthor : : Unusual Boyee
+// Date    : : 2021/08/17
+// Concept : : Url extraction from file.
+// Main    : : voperatingsystem@gmail.com
+// Country : : Nepal
+/* This file is the last file till date.
+ * It prints urls and count each url.
+ * Also saves urls in a file. */
+#ifndef _complete
+#define _complete
+#include "variable"
+#include<stdio.h>
+
+int count_url;
+void _query(){
+
+	if(final_http_position==47){
+		final_http_position=final_http_position-1;
+	}
+	if(final_http_position==47){
+		final_http_position=final_http_position-1;
+	}
+	if(final_http_position==47){
+		final_http_position=final_http_position-1;
+	}
+	if(final_http_position==47){
+		final_http_position=final_http_position-1;
+	}
+	if(final_http_position==47){
+		final_http_position=final_http_position-1;
+	}
+	if(final_http_position==47){
+		final_http_position=final_http_position-1;
+	}
+
+}
+
+void url_chain(){
+	//_query();
+	FILE *write_file=fopen("URL","a");
+	printf("[\033[032m WRITTEN \033[0m] ");
+	for(int i=first_position;i<final_http_position;i++){
+		printf("%c",main_file_buffer[i]);
+	}
+	for(first_position;first_position<final_http_position;first_position++){
+		putc(main_file_buffer[first_position],write_file);
+	}
+	fputs("\n",write_file);
+	printf("\n");
+	count_url+=1;
+	fclose(write_file);
+}
+#endif

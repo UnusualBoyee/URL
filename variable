@@ -1,0 +1,21 @@
+// Aurthor : : Unusual Boyee
+// Date    : : 2021/08/17
+// Concept : : Url extraction from file.
+// Main    : : voperatingsystem@gmail.com
+// Country : : Nepal
+/* This file is considered as a variable declaring/refrencing. */
+#ifndef _variable
+#define _variable
+extern int count_url;
+extern int size;
+extern int first_position;
+extern int final_http_position;
+extern char *_file;
+char http[7]={104,116,116,112,58,47,47};
+char https[8]={104,116,116,112,115,58,47,47};
+char https_3x[9]={104,116,116,112,115,92,120,51,65};
+char https_and[10]={104,116,116,112,115,38,35,120,51,97};
+
+extern int ampersand,question_mark,double_quote,single_quote,open_bracket,close_bracket,comma;
+extern char *main_file_buffer;
+#endif

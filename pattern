@@ -1,0 +1,141 @@
+// Aurthor : : Unusual Boyee
+// Date    : : 2021/08/17
+// Concept : : Url extraction from file.
+// Main    : : voperatingsystem@gmail.com
+// Country : : Nepal
+/* This file is considered as third file.
+ * Here after the second file patterns are checked for the filtering the url.
+ * For example some of the url contains the '?' at ending points but some urls takes '?' as ..., so to extract the url complete clean we have to filter them.
+ * For other urls there is different ending points, therefore we have to filter them in correct way. */
+
+#include "variable"
+#include "complete"
+
+int ampersand,question_mark,double_quote,single_quote,open_bracket,close_bracket,comma;
+int first_position,final_http_position;
+char u_003_c[5]={117,48,48,51,99};
+/* This function checks for the '?' ending point and replace final position to '"' ending point.
+ * Also checks for the js.script code(url/?id=') in second loop. 
+ * And third loop checks for the '}' ending point. */
+void check_pattern(){
+	int single_checks=0,bracket_checks=0,confirm_url=0;
+/* This loop checks for '.' to confirm that given position contains urls. */
+	for(int i=first_position;i<final_http_position;i++){
+		if(main_file_buffer[i]==46){
+			confirm_url+=1;
+			break;
+		}
+	}
+	if(confirm_url==1){
+		int confirm_u003c=0;
+		if (final_http_position==question_mark){
+			for(int i=first_position;i<final_http_position;i++){
+				if(main_file_buffer[i]==39){
+					if(first_position+4==i) first_position=question_mark;
+				}else final_http_position=double_quote;
+			}
+			for(int i=first_position;i<final_http_position;i++){
+				if(main_file_buffer[i]==39){
+					single_checks=i;
+					break;
+				}
+			}
+			for( int i=first_position;i<final_http_position;i++){
+				if(main_file_buffer[i]==125){
+					bracket_checks=i;
+					break;
+				}else if(i==final_http_position) break;
+			}
+
+/* Bracket may not be found and checks that the bracket is zero in value and checks for the bracket position to be less than final position because if not then the url may get unwanted string upto ending point '}'. */
+			if(bracket_checks!=0 && bracket_checks<final_http_position) final_http_position=bracket_checks;
+/* This for the js.script code(url/?id='). */
+			if(single_checks-question_mark==4) final_http_position=question_mark;
+		}
+		for(int i=first_position;i<final_http_position;i++){
+			if(main_file_buffer[i]==32){
+				final_http_position=i;
+				break;
+			}
+		}
+		for(int i=first_position;i<final_http_position;i++){
+			if(main_file_buffer[i]==32){
+				final_http_position=i;
+				break;
+			}
+		}
+		for(int i=first_position;i<final_http_position;i++){
+			if(main_file_buffer[i]==60){
+				final_http_position=i;
+				break;
+			}
+		}
+		for(int i=first_position;i<final_http_position;i++){
+			if(main_file_buffer[i]==62){
+				final_http_position=i;
+				break;
+			}
+		}
+
+		for(int i=first_position;i<final_http_position;i++){
+			if(confirm_u003c==5){
+				final_http_position=i-7;
+				break;
+			}else{
+				confirm_u003c=0;
+			}
+			for(int j=0;j<5;j++){
+				if ( main_file_buffer[i]==u_003_c[j]){
+					//sleep(1);
+					//printf("%d\n",j);
+					//printf("%c:%d,   ,%c:%d\n",main_file_buffer[i],main_file_buffer[i],u_003_c[j],u_003_c[j]);
+					if(confirm_u003c==5) break;
+					i++;
+					confirm_u003c+=1;
+					
+				}else {
+					break;
+				}
+			}
+		}
+		for(int i=first_position;i<final_http_position;i++){
+			if (main_file_buffer[i]==10){
+				final_http_position=i;
+				break;
+			}	
+		}
+
+	}else {
+		first_position=0;
+		final_http_position=0;
+	}
+}
+
+/* This function checks for the ending point of \x22 and resets the final position. */
+void check_pattern_3x(){
+	char _x22[4]={92,120,50,50};
+	int j=0,counter=0;
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==_x22[j]){
+			counter+=1;
+			j++;
+		}else {
+			counter=0;
+			j=0;
+		}
+		if(counter==4){
+			final_http_position=i-3;
+			break;
+		}
+	}
+}
+
+/* This function checks for the '"' only, because the urls may contains different ending point and make the code confuse. */
+void check_pattern_and(){
+	for(int i=first_position;i<size;i++){
+		if(main_file_buffer[i]==34){
+			final_http_position=i;
+			break;
+		}
+	}
+}
