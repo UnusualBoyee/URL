@@ -6,5 +6,5 @@ Can be modified and redistributed. Without anyone's permission.
 gcc main.c
 # RUN
 ./(char *str) (FILENAME)
-# MAIL(REPORT BUG / REQUEST 'how did')
+# MAIL(REPORT BUG / REQUEST 'how did' / REPORT NOT MAINTAINED CODE PROPERLY)
 voperatingsystem@gmail.com
